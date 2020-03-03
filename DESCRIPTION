@@ -7,6 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "jingyd3@uw.edu")
 Description: project3 for STAT 302.
+Depends: R (>= 2.10)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
