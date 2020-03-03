@@ -1,0 +1,13 @@
+Package: Project3Package
+Title: Package Building Project
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Sylvia",
+           family = "Du",
+           role = c("aut", "cre"),
+           email = "jingyd3@uw.edu")
+Description: project3 for STAT 302.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
