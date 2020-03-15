@@ -54,6 +54,7 @@ library(randomForest)
 library(class)
 library(stats)
 data(my_gapminder)
+devtools::document()
 ```
 
 If you are unfamiliar with my_gapminder, you can view a description of the data using:
@@ -131,7 +132,7 @@ Since the p value is much smaller than 0.05, we can reject the null hypothesis.
 ***
 To visualize how well the model fits, we can plot the Actual vs Fitted values
 
-```{r}
+```{r fig.height = 4, fig.width = 6}
 formula <- lifeExp ~ gdpPercap + continent
 f <- model.frame(formula, my_gapminder)
 # extract the explanatory variable x 
@@ -199,7 +200,7 @@ for(k in c(2, 5, 10)) {
 cv_error
 ```
 
-```{r}
+```{r fig.height = 4, fig.width = 6}
 my_df <- data.frame("k" = cv_error[, 1], "mse" = cv_error[, 2])
 ggplot(my_df, aes(x = k, y = mse, group = k, fill = factor(k))) +
   geom_boxplot() +

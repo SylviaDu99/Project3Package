@@ -29,8 +29,8 @@ my_rf_cv <- function(k) {
     mse <- c()
     for (i in 1:k) {
         # define the training data as all the data not in the ith fold
-        data_train <- data %>% filter(split != i)
-        data_test <- data %>% filter(split == i)
+        data_train <- data %>% dplyr::filter(split != i)
+        data_test <- data %>% dplyr::filter(split == i)
         # train a random forest model with 50 trees to predict lifeExp using covariate gdpPercap
         my_model <- randomForest(lifeExp ~ gdpPercap, data = data_train, ntree = 50)
         # predict the lifeExp of the ith fold which was used as test data
