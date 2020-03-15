@@ -8,7 +8,7 @@
 This package is a final project of STAT 302 in UW containing 4 functions we 
 developed during the quarter that allow us to analyze data with multiple methods.
 
-## Installing
+## Installation
 
 To install Project3Package, use the code below:
 

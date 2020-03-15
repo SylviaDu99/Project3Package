@@ -50,7 +50,6 @@ library(Project3Package)
 library(magrittr)
 library(ggplot2)
 library(dplyr)
-library(kableExtra)
 data("my_gapminder")
 ```
 
