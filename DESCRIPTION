@@ -19,6 +19,11 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 Imports:
+    gapminder,
     magrittr,
     class,
-    randomForest
+    randomForest,
+    tidyverse,
+    tibble,
+    stringr,
+    ggplot2

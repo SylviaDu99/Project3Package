@@ -3,7 +3,7 @@ title: "Project 3: Project3Package Tutorial"
 author: "Sylvia Du"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Project 3: Project3Package Tutorial}
+  %\VignetteIndexEntry{Project3Package Tutorial}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,6 +15,213 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Information
+Special thank to Bryan D. Martin for his teaching in STAT 302 and kindly providing us with the example we use for this vignette.
+
+## Introduction
+
+This package is a final project of STAT 302 in UW containing 4 functions we 
+developed during the quarter:
+<p>
+*my_t.test
+*my_lm
+*my_knn_cv
+*my_rf_cv
+</p>
+that allow us to analyze data with multiple methods.
+
+The package also includes a dataset:
+<p>
+my_gapminder 
+<p>
+taken from the famous gapminder dataset.
+
+To install \testtt{Project3Package}, use the code below:
+
+```{r, eval = FALSE}
+devtools::install_github("SylviaDu99/Project3Package")
+```
+
+
+To begin, we need to load the following packages and sample dataset:
+
 ```{r setup}
 library(Project3Package)
+library(magrittr)
+library(ggplot2)
+library(dplyr)
+library(kableExtra)
+data("my_gapminder")
 ```
+
+If you are unfamiliar with my_gapminder, you can view a description of the data using:
+```{r help}
+?my_gapminder
+```
+or directly view the dataset using:
+```{r view}
+my_gapminder
+```
+
+## Tutorials
+In this tutorial, how each of the function works is shown.
+
+### my_t.test
+The function my_t.test can be used to perform a one-sampled t test to show whether it is able to reject the null hypothesis.
+
+For demonstration, we use **lifeExp** from my_gapminder.
+
+We are want to test the null hypothesis that the mean value of lifeExp is 60
+$$H_0: \mu = 60$$
+with significant level equals to 0.05.
+$$\alpha = 0.05$$
+
+***
+
+The first example is a two sided t test
+$$H_a: \mu \neq 60$$
+
+```{r}
+my_t.test(my_gapminder$lifeExp, "two.sided", 60)
+```
+From the output list, the p value is greater than the significant level 0.05, so we cannot reject the null hypothesis.
+
+***
+
+The second example is a lower tailed t test
+$$H_a: \mu < 60$$
+
+```{r}
+my_t.test(my_gapminder$lifeExp, "less", 60)
+```
+From the output list, the p value is smaller than 0.05, so we can reject the null hypothesis.
+
+***
+
+The third example is an upper tailed t test
+$$H_a: \mu > 60$$
+
+```{r}
+my_t.test(my_gapminder$lifeExp, "greater", 60)
+```
+From the output list, the p value is greater than 0.05, so we cannot reject the null hypothesis.
+
+
+### my_lm
+The function my_lm can be used to fit a linear model to the input data.
+
+For demonstration, we use data from my_gapminder. 
+Let **lifeExp** to be the response variable, **gdpPercap** and **continent** to be the explanatory variables.
+
+```{r message = FALSE, warning = FALSE}
+my_model <- my_lm(lifeExp ~ gdpPercap + continent, data = my_gapminder)
+my_model
+```
+From the output table, we can see that the coefficient (the Estimate column) of gdpPercap has value about 0.000445, which means lifeExp increases 0.000445 as gdpPercap increases 1.
+
+***
+
+Set $H_0$ and $H_a$ to:
+$$H_0: coefficient = 0$$
+$$H_a: coefficient \neq 0$$
+and the set the significant level to:
+$$ \alpha = 0.05$$
+From the output table by my_lm, we can find the p value (the Pr(>|t|) column). <br>
+Since the p value is much smaller than 0.05, we can reject the null hypothesis.
+
+***
+To visualize how well the model fits, we can plot the Actual vs Fitted values
+
+```{r fig.align="center", fig.width= 5 , fig.height= 4}
+formula <- lifeExp ~ gdpPercap + continent
+f <- model.frame(formula, my_gapminder)
+# extract the explanatory variable x 
+x <- model.matrix(object, my_gapminder)
+# extract the response variable y
+y <- model.response(f) %>% as.matrix()
+# y_hat = x * coeff + se
+y_hat <- x %*% as.matrix(my_model[,1]) + my_model[,2]
+my_df <- data.frame("actual" = my_gapminder$lifeExp, "fitted" = y_hat, "continent" = my_gapminder$continent) 
+ggplot(my_df, aes(x = fitted, y = actual, color = continent)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(title = "Actual vs Fitted Values", x = "Fitted Values", y = "Actual Values", color = "Continent") +
+  theme_bw(base_size = 15) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_text(hjust = 0.5))
+```
+<br>
+From the visualization, we can see that this model have better fit in Europe and Oceania than other in continents. In order to get a better fitted model, we need to also try other algorithms.
+
+
+### my_knn_cv
+
+The function my_knn_cv can be used to predict the class value by k-fold Cross-validation and k-nearest neighbors algorithms.
+
+For demonstration, let continent to be class value that we are predicting by using covariates gdpPercap and lifeExp.
+```{r}
+train <- my_gapminder %>% select(gdpPercap, lifeExp)
+cl <- my_gapminder$continent
+result <- matrix(NA, nrow = 10, ncol = 2)
+rownames(result) <- c(1:10)
+for (i in 1:10) {
+  output <- my_knn_cv(train, cl, i, 5)
+  # cv misclassfication rate
+  result[i, 1] <- output$cv_err
+  # training misclassification rate
+  result[i, 2] <- output$te
+}
+result <- data.frame("Number of neighbors" = c(1:10), 
+                     "cv misclassification rate" = result[, 1],
+                     "training misclassification rate" = result[, 2])
+kable_styling(kable(result))
+```
+Cross validation splits the data into **k** different folds, among which **k-1** folds are used to train the model and the left fold is used to test the model. It is useful because we can use it to find the optimal test error, so that we can use the full set of data to train the final model, and finally generate predictions.
+According to the table, we would choose different models basedon different misclassification rates. Based on the training misclassification rates, we choose 1_nn, where k_nn = 1, and choose 10_nn, k_nn = 10 if based on cv misclassification rates. In practice, I would choose 5_nn, k_nn = 5, where neither the training misclassification rate nor the cv misclassification rate is tending to extreme value. 
+
+### my_rf_cv
+The function my_rf_cv can be used to perform a prediction using random forest method and also train and evaluate the model by cross validation.
+For demonstration, we are making prediction of lifeExp using covariate gdpPercap, iterating through k in c(2, 5, 10) each 30 times.
+```{r}
+cv_error <- matrix(NA, nrow = 90, ncol = 2)
+cv_error[, 1] <- rep(c(2, 5, 10), each = 30)
+row <- 1
+for(k in c(2, 5, 10)) {
+  for(i in 1:30) {
+    cv_error[row, 2] <- my_rf_cv(k)
+    row <- row + 1
+  }
+}
+```
+```{r fig.align="center", fig.height= 10, fig.width= 10}
+my_df <- data.frame("k" = cv_error[, 1], "mse" = cv_error[, 2])
+my_df %>% 
+  ggplot(aes(x = factor(k), y = mse, fill = factor(k))) +
+  geom_boxplot() +
+  labs(title = "MSE of K folds", x = "Number of Folds", y = "MSE", 
+       fill = "Number of Folds") +
+  theme_classic(base_size = 15) +
+  theme(plot.title = element_text(hjust = 0.5),
+        panel.background = element_rect(fill = "ghostwhite"),
+        legend.title = element_text(hjust = 0.5, size = 10),
+        legend.margin = margin(5, 5, 5, 5))
+```
+```{r}
+mse_sum <- my_df %>% 
+  group_by(k) %>%
+  summarise(mean = mean(mse), sd = sd(mse))
+kable_styling(kable(mse_sum))
+```
+According to the boxplot and the table, as k increases, we can see that the range of mse and the standard deviation are tending to decrease, while the median and mean are tending to increase.Because the more folds exist, the more we can evaluate the data, and our prediction would be more accurate as the MSE and standard deviation decrease due to the decrease of variance.
+
+
+
+
+
+
+
+
+
+
+
+
