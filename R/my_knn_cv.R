@@ -34,7 +34,7 @@ my_knn_cv <- function(train, cl, k_nn, k_cv) {
         # predict class value of the ith fold using all other folds as training data
         data_train <- data %>% filter(split != i)
         data_test <- data %>% filter(split == i)
-        y_hat <- knn(data_train$x, data_test$x, data_train$y, k_nn)
+        y_hat <- knn(select(data_train, contains("x")), select(data_test, contains("x")), data_train$y, k_nn)
         class <- c(class, y_hat)
         # record the prediction and the misclassification rate
         cv_err[i] = sum(y_hat != data_test$y) / fold_l
