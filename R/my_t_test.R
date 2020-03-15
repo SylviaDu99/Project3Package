@@ -14,6 +14,8 @@
 #' my_t.test(lifeExp, "less", 60)
 #' my_t.test(lifeExp, "greater", 60)
 #'
+#' @import magrittr
+#'
 #' @export
 
 my_t.test <- function(x, alternative, mu) {

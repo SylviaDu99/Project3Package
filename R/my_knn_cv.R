@@ -14,7 +14,7 @@
 #' @examples
 #' my_knn_cv(my_gapminder[, 4:5], continent, 1, 5)
 #'
-#' @import class randomForest stringr tidyverse
+#' @import class stats magrittr tidyverse
 #'
 #' @export
 

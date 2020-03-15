@@ -11,6 +11,8 @@
 #' @examples
 #' my_lm(lifeExp~gdpPercap+continent, my_gapminder)
 #'
+#' @import magrittr
+#'
 #' @export
 
 my_lm <- function(formula, data) {
