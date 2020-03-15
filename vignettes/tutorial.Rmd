@@ -53,9 +53,7 @@ library(dplyr)
 library(randomForest)
 library(class)
 library(stats)
-library(devtools)
 data(my_gapminder)
-devtools::document()
 ```
 
 If you are unfamiliar with my_gapminder, you can view a description of the data using:
@@ -224,7 +222,7 @@ my_t <- my_df %>%
 rownames(my_t) <- c("k = 2", "k = 5", "k = 10")
 my_t
 ```
-According to the boxplot and the table, as k increases, the range of mse, the standard deviation, the median and mean are tending to increase. Because the more folds exist, the more we can evaluate the data, and our prediction would be more accurate as the MSE and standard deviation decrease due to the decrease of variance.
+According to the boxplot and the table, as k increases, the range of mse and the standard deviation decreases, while the mean and the median of mse increases. The larger the range, the larger the standard deviation is of the data, which explains why 2-fold case has the largest sd and the 10-fold case has the lowest sd. The more folds we create, the more the iterations of the data help to generate a better model, and the prediction would be more accurate.
 
 
 

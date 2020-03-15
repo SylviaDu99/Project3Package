@@ -10,9 +10,9 @@
 #' @return List object containing t score, degree of freedom, type of alternative hypothesis, and p value of \code{x}
 #'
 #' @examples
-#' my_t.test(lifeExp, "two.sided", 60)
-#' my_t.test(lifeExp, "less", 60)
-#' my_t.test(lifeExp, "greater", 60)
+#' my_t.test(rnorm(10, 0, 1), "two.sided", 5)
+#' my_t.test(rnorm(10, 0, 1), "less", 5)
+#' my_t.test(rnorm(10, 0, 1), "greater", 5)
 #'
 #' @import magrittr
 #'

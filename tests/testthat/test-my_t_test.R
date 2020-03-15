@@ -1,12 +1,9 @@
-data("my_gapminder")
-lifeExp <- my_gapminder$lifeExp
-
 test_that("my_t_test throws an error when input is not valid", {
-    expect_error(my_t.test(lifeExp, "a", 60))
-    expect_error(my_t.test("a", "two.sided", 60))
-    expect_error(my_t.test(lifeExp, "two.sided", "60"))
+    expect_error(my_t.test(rnorm(10, 0, 1), "a", 5))
+    expect_error(my_t.test("a", "less", 5))
+    expect_error(my_t.test(rnorm(10, 0, 1), "less", "5"))
 })
 
 test_that("my_t_test returns a list as output", {
-    expect_is(my_t.test(lifeExp, "greater", 60), "list")
+    expect_is(my_t.test(rnorm(10, 0, 1), "less", 5), "list")
 })

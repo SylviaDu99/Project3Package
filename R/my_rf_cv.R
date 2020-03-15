@@ -36,7 +36,7 @@ my_rf_cv <- function(k) {
         # predict the lifeExp of the ith fold which was used as test data
         my_pred <- predict(my_model, select(data_test, -split))
         # evaluate the MSE, the average squared difference between predicted lifeExp and true lifeExp
-        mse <- c(mse, mean(my_pred - data_test$lifeExp)^2)
+        mse <- c(mse, mean((my_pred - data_test$lifeExp)^2))
     }
     output <- mean(mse)
     return(output)
