@@ -23,7 +23,7 @@ misclassification rate and the training misclassification rate
 This function predicts the class value by k-fold Cross-validation and k-nearest neighbors algorithms.
 }
 \examples{
-my_knn_cv(my_gapminder[, 4:5], continent, 1, 5)
+my_knn_cv(my_gapminder[, 4:5], my_gapminder$continent, 1, 5)
 
 }
 \keyword{prediction}

@@ -11,7 +11,7 @@
 #' @examples
 #' my_rf_cv(5)
 #'
-#' @import class randomForest stringr tidyverse
+#' @import class randomForest stringr tidyverse dplyr
 #'
 #' @export
 my_rf_cv <- function(k) {

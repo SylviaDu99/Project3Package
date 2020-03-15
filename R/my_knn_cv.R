@@ -12,9 +12,9 @@
 #' misclassification rate and the training misclassification rate
 #'
 #' @examples
-#' my_knn_cv(my_gapminder[, 4:5], continent, 1, 5)
+#' my_knn_cv(my_gapminder[, 4:5], my_gapminder$continent, 1, 5)
 #'
-#' @import class stats magrittr tidyverse
+#' @import class stats magrittr tidyverse dplyr
 #'
 #' @export
 
