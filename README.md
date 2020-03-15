@@ -10,7 +10,7 @@ developed during the quarter that allow us to analyze data with multiple methods
 
 ## Installing
 
-To install \testtt{Project3Package}, use the code below:
+To install Project3Package, use the code below:
 
 ```{r, eval = FALSE}
 devtools::install_github("SylviaDu99/Project3Package")

@@ -136,7 +136,7 @@ To visualize how well the model fits, we can plot the Actual vs Fitted values
 formula <- lifeExp ~ gdpPercap + continent
 f <- model.frame(formula, my_gapminder)
 # extract the explanatory variable x 
-x <- model.matrix(object, my_gapminder)
+x <- model.matrix(formula, my_gapminder)
 # extract the response variable y
 y <- model.response(f) %>% as.matrix()
 # y_hat = x * coeff + se
