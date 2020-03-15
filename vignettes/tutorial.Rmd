@@ -53,6 +53,7 @@ library(dplyr)
 library(randomForest)
 library(class)
 library(stats)
+library(devtools)
 data(my_gapminder)
 devtools::document()
 ```
@@ -190,12 +191,13 @@ For demonstration, let k be 2, 5, 10 and iterate each case 30 times.
 ```{r}
 cv_error <- matrix(NA, nrow = 90, ncol = 2)
 row <- 1
-for(k in c(2, 5, 10)) {
-  for(i in 1:30) {
-    cv_error[row, 1] <- k
-    cv_error[row, 2] <- my_rf_cv(k)
-    row <- row + 1
-  }
+for(i in 1:30) {
+    cv_error[i, 1] <- 2
+    cv_error[i, 2] <- my_rf_cv(2)
+    cv_error[i + 30, 1] <- 5
+    cv_error[i + 30, 2] <- my_rf_cv(5)
+    cv_error[i + 60, 1] <- 10
+    cv_error[i + 60, 2] <- my_rf_cv(10)
 }
 cv_error
 ```
@@ -222,7 +224,7 @@ my_t <- my_df %>%
 rownames(my_t) <- c("k = 2", "k = 5", "k = 10")
 my_t
 ```
-According to the boxplot and the table, as k increases, we can see that the range of mse and the standard deviation are tending to decrease, while the median and mean are tending to increase.Because the more folds exist, the more we can evaluate the data, and our prediction would be more accurate as the MSE and standard deviation decrease due to the decrease of variance.
+According to the boxplot and the table, as k increases, the range of mse, the standard deviation, the median and mean are tending to increase. Because the more folds exist, the more we can evaluate the data, and our prediction would be more accurate as the MSE and standard deviation decrease due to the decrease of variance.
 
 
 
