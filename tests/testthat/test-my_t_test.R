@@ -5,5 +5,5 @@ test_that("my_t_test throws an error when input is not valid", {
 })
 
 test_that("my_t_test returns a list as output", {
-    expect_is(my_t.test(rnorm(10, 0, 1), "less", 5), "list")
+    expect_is(my_t.test(rnorm(10, 0, 1), "greater", 5), "list")
 })
